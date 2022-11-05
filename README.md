@@ -9,7 +9,7 @@ sea-air-search
 ## Ideas
 
 1. First open-source AI-powered WWW Search engine <br/>
-… see Comparison of web search engines - Wikipedia br/>
+… see Comparison of web search engines - Wikipedia <br/>
 … as YaCi has basically no public web available (just searchlab.eu) <br/>
 … so the only opensource that works is Gigablast and it uses no AI, …
 
