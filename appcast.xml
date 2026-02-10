@@ -33,9 +33,9 @@
         url="https://resistine.github.io/releases/Resistine-Installer-1.0.1.dmg"
         sparkle:version="1.0.1"
         sparkle:shortVersionString="1.0.1"
-        length="36802435"
+        length="36874084"
         type="application/octet-stream"
-        sparkle:edSignature="+HwaIw0cdBfr0RVnLO787nGYr28AtltuOfyMVXeXomjtAA9E/cJgtC2zuAKbomsFRPrQhcQ5zEH2yX41/EGfCw=="
+        sparkle:edSignature="ib6tDh8IwYhMAplBP1pEs3jhFAnRyO1hxRPIPgfY0qWYreW8qZwtHmt/wzPdYJqx4LmYPGoJctrruvuS8AgDAg=="
       />
     </item>
 
