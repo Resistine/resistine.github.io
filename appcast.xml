@@ -70,10 +70,10 @@
       ]]></description>
       <pubDate>Thu, 20 Mar 2026 13:00:00 +0000</pubDate>
       <enclosure
-        url="https://github.com/Resistine/Resistine-Desktop/releases/download/v2026.03.20-dev/Resistine-Desktop-Win-2026.03.20-dev.exe"
+        url="https://resistine.github.io/releases/windows/Resistine-Desktop-Win-2026.03.20-dev.exe"
         sparkle:version="2026.03.20-dev"
         sparkle:shortVersionString="2026.03.20-dev"
-        length="0"
+        length="46614586"
         type="application/octet-stream"
       />
     </item>
