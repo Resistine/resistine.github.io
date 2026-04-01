@@ -23,6 +23,37 @@
       4. Add a new <item os="Windows"> with version, length, and download URL below
     -->
 
+    <!-- Windows Version 2026.04.01-dev -->
+    <item>
+      <title>Version 2026.04.01-dev</title>
+      <description><![CDATA[
+        <h2>What's New</h2>
+        <ul>
+          <li>WinSparkle integration for native Windows auto-updates</li>
+          <li>Unified update system across macOS, Windows, and Linux</li>
+          <li>Fixed Sparkle auto-update crash on macOS</li>
+          <li>Switched to date-based versioning</li>
+          <li>Improved markdown rendering: tables, box diagrams, admonitions, and ASCII art</li>
+          <li>Cairo rendering backend for Linux with antialiasing support</li>
+          <li>Wazuh endpoint agent support on Linux and Windows with Sysmon integration</li>
+          <li>Smoother cross-platform scrolling for chat, settings, and help plugins</li>
+          <li>Updated app icon for all platforms and reorganized file structure</li>
+          <li>Fixed VPN DNS serialization and Linux connection issues</li>
+          <li>Windows: suppress console windows during installs, elevate config writes</li>
+          <li>Linux: Ctrl+A support, scrollbar fixes, and VPN page padding</li>
+        </ul>
+      ]]></description>
+      <pubDate>Mon, 31 Mar 2026 18:00:00 +0000</pubDate>
+      <enclosure
+        url="https://resistine.github.io/releases/windows/Resistine-Setup-2026.04.01-dev.exe"
+        sparkle:version="2026.04.01-dev"
+        sparkle:shortVersionString="2026.04.01-dev"
+        sparkle:os="windows"
+        length="47568197"
+        type="application/x-winsparkle"
+      />
+    </item>
+
     <!-- macOS Version 2026.03.19 -->
     <item>
       <title>Version 2026.03.19</title>
