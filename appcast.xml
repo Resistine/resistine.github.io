@@ -59,13 +59,13 @@
       ]]></description>
       <pubDate>Thu, 09 Apr 2026 18:00:00 +0000</pubDate>
       <enclosure
-        url="https://resistine.github.io/releases/windows/Resistine-Setup-2026.04.09-test.exe"
+        url="https://resistine.github.io/releases/windows/Resistine-Setup-2026.04.09-test-2.exe"
         sparkle:version="2026.04.10"
         sparkle:shortVersionString="2026.04.10"
         sparkle:os="windows"
-        length="47568989"
+        length="47567557"
         type="application/x-winsparkle"
-        sparkle:edSignature="7AUWsV71kNldWuJn9E/2NDoF4t4kwMdaZ2xGk0Q1+bO1KHK9lPgSdsSGCUbkU0r9T+O2BuPIoiz3DT0XJo13CQ=="
+        sparkle:edSignature="8L9nNIDnTNx/aDbE2d+GJcUKl4uXSWRnZciIsKG2b9iXnZKb0a0ZrgjNFL1WR0e3swpZD9EO6uQBBX0TM1W5Bg=="
       />
     </item>
 
