@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="refresh" content="0; url='https://www.resistine.com'" />
+    <style rel="stylesheet">
+      body, * { font-family: "Inter", Arial, Sans-Serif; font-size: 12pt; color: #000000; }
+      a:hover { color: #0b5394; }
+      .cntnr  { height: 100%; width: 100%; display: flex; position: fixed; align-items: center; justify-content: center; }
+    </style>
+  </head>
+  <body>
+    <div class="cntnr">
+      <div>Please redirect to <a href="https://www.resistine.com">www.resistine.com</a>.</div>
+    </div>
+  </body>
+</html>
