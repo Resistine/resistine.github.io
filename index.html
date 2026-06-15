@@ -1,16 +1,1578 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta http-equiv="refresh" content="0; url='https://www.resistine.com'" />
-    <style rel="stylesheet">
-      body, * { font-family: "Inter", Arial, Sans-Serif; font-size: 12pt; color: #000000; }
-      a:hover { color: #0b5394; }
-      .cntnr  { height: 100%; width: 100%; display: flex; position: fixed; align-items: center; justify-content: center; }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Download Resistine desktop and Android releases from GitHub Pages."
+    />
+    <title>Resistine Downloads</title>
+    <style>
+      :root {
+        --ink: #071f3a;
+        --ink-2: #12365d;
+        --paper: #f5f8fc;
+        --paper-2: #e5eef8;
+        --paper-3: #ffffff;
+        --muted: #607086;
+        --line: #cbd7e6;
+        --line-dark: rgba(255, 255, 255, 0.16);
+        --blue: #0b5394;
+        --blue-2: #1d7bd8;
+        --blue-soft: #dceeff;
+        --good: #168a4a;
+        --radius: 8px;
+        --shadow: 0 26px 70px rgba(7, 31, 58, 0.18);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--paper);
+        color: var(--ink);
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background:
+          linear-gradient(90deg, rgba(11, 83, 148, 0.045) 1px, transparent 1px),
+          linear-gradient(0deg, rgba(11, 83, 148, 0.035) 1px, transparent 1px),
+          var(--paper);
+        background-size: 44px 44px, 44px 44px, auto;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .page {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(7, 31, 58, 0.1);
+        background: rgba(245, 248, 252, 0.92);
+        backdrop-filter: blur(18px);
+      }
+
+      .nav {
+        display: flex;
+        min-height: 72px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 22px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+      }
+
+      .brand-logo {
+        display: block;
+        width: 160px;
+        height: 40px;
+        border-radius: 5px;
+        object-fit: cover;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 6px;
+      }
+
+      .nav-link {
+        display: inline-flex;
+        min-height: 38px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 12px;
+        border-radius: 8px;
+        color: var(--ink-2);
+        font-size: 0.93rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .nav-link:hover {
+        background: var(--paper-2);
+      }
+
+      .icon-link {
+        width: 40px;
+        padding: 0;
+      }
+
+      .icon-link svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+      }
+
+      .hero-band {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #06182d 0%, #0b315c 56%, #0b5394 100%);
+        color: #fff;
+      }
+
+      .hero-band::before {
+        position: absolute;
+        inset: 0;
+        content: "";
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+          linear-gradient(0deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+          radial-gradient(circle at 80% 12%, rgba(65, 166, 255, 0.34), transparent 25rem);
+        background-size: 46px 46px, 46px 46px, auto;
+        opacity: 0.82;
+      }
+
+      .hero {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 0.78fr);
+        gap: 56px;
+        align-items: center;
+        min-height: min(720px, calc(100vh - 72px));
+        padding: 76px 0 64px;
+      }
+
+      .hero h1 {
+        max-width: 760px;
+        margin: 0;
+        font-size: clamp(3.1rem, 7vw, 6.8rem);
+        line-height: 0.92;
+      }
+
+      .hero-copy {
+        max-width: 650px;
+        margin: 28px 0 0;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: clamp(1.1rem, 1.8vw, 1.34rem);
+        line-height: 1.58;
+      }
+
+      .download-panel {
+        border: 1px solid var(--line-dark);
+        border-radius: var(--radius);
+        background: rgba(245, 248, 252, 0.97);
+        color: var(--ink);
+        box-shadow: var(--shadow);
+      }
+
+      .download-panel-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 24px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .download-panel-title {
+        margin: 0;
+        font-size: 1.28rem;
+        line-height: 1.2;
+      }
+
+      .download-panel-subtitle {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .download-panel-subtitle a,
+      .confidence a {
+        color: var(--blue);
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .download-panel-subtitle a:hover,
+      .confidence a:hover {
+        text-decoration: underline;
+      }
+
+      .detected {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 30px;
+        border: 1px solid rgba(29, 123, 216, 0.42);
+        border-radius: 999px;
+        background: rgba(29, 123, 216, 0.12);
+        color: #0b3d6f;
+        padding: 0 10px;
+        font-size: 0.76rem;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .download-panel-body {
+        padding: 24px;
+      }
+
+      .primary-download {
+        display: grid;
+        grid-template-columns: 54px minmax(0, 1fr);
+        gap: 16px;
+        align-items: center;
+        min-height: 92px;
+        border: 1px solid var(--ink);
+        border-radius: var(--radius);
+        background: var(--ink);
+        color: #fff;
+        padding: 18px;
+        text-decoration: none;
+      }
+
+      .primary-download:hover {
+        background: #000;
+      }
+
+      .os-glyph {
+        display: grid;
+        width: 54px;
+        height: 54px;
+        place-items: center;
+        border-radius: 8px;
+        background: var(--blue-2);
+        color: #fff;
+        font-weight: 900;
+      }
+
+      .os-glyph svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      .primary-download strong {
+        display: block;
+        overflow-wrap: anywhere;
+        font-size: 1.08rem;
+      }
+
+      .primary-download span span {
+        display: block;
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 0.9rem;
+      }
+
+      .confidence {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+
+      .download-meta {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .download-meta div {
+        min-height: 70px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        padding: 12px;
+      }
+
+      .download-meta span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.74rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .download-meta strong {
+        display: block;
+        margin-top: 6px;
+        overflow-wrap: anywhere;
+        font-size: 0.95rem;
+      }
+
+      .panel-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--ink);
+        padding: 0 14px;
+        font-size: 0.9rem;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .button:hover {
+        border-color: var(--ink);
+      }
+
+      .button.blue {
+        border-color: var(--blue-2);
+        background: var(--blue-2);
+        color: #fff;
+      }
+
+      main {
+        padding-bottom: 58px;
+      }
+
+      .section {
+        padding: 56px 0 0;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 18px;
+      }
+
+      .section-title {
+        margin: 0;
+        font-size: clamp(1.7rem, 3vw, 2.55rem);
+        line-height: 1.08;
+      }
+
+      .section-copy {
+        max-width: 680px;
+        margin: 10px 0 0;
+        color: var(--muted);
+        line-height: 1.58;
+      }
+
+      .platform-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .platform-card {
+        display: grid;
+        gap: 16px;
+        min-height: 250px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.7);
+        padding: 20px;
+      }
+
+      .platform-card.selected {
+        border-color: var(--ink);
+        background: #fff;
+        box-shadow: 0 18px 46px rgba(7, 31, 58, 0.12);
+      }
+
+      .platform-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .platform-icon {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border-radius: 8px;
+        background: var(--ink);
+        color: #fff;
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      .platform-icon svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .platform-card.selected .platform-icon {
+        background: var(--blue-2);
+        color: #fff;
+      }
+
+      .platform-card h3 {
+        margin: 0;
+        font-size: 1.28rem;
+      }
+
+      .platform-card p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.45;
+      }
+
+      .platform-latest {
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.45;
+      }
+
+      .platform-latest strong {
+        display: block;
+        color: var(--ink);
+        overflow-wrap: anywhere;
+      }
+
+      .platform-card .button {
+        align-self: end;
+      }
+
+      .empty-platform {
+        display: grid;
+        gap: 10px;
+        align-self: end;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+
+      .archive-tools {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 16px;
+      }
+
+      .archive-controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .toggle {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--ink-2);
+        padding: 0 12px;
+        font-size: 0.86rem;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .toggle input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--blue-2);
+      }
+
+      .sort-select {
+        min-height: 44px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--ink);
+        padding: 0 36px 0 12px;
+        font-size: 0.9rem;
+        font-weight: 800;
+      }
+
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tab {
+        min-height: 38px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--ink-2);
+        padding: 0 14px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 800;
+      }
+
+      .tab[aria-selected="true"] {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: #fff;
+      }
+
+      .search {
+        position: relative;
+        width: min(360px, 100%);
+      }
+
+      .search input {
+        width: 100%;
+        min-height: 44px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        padding: 0 14px 0 40px;
+        color: var(--ink);
+        outline: none;
+      }
+
+      .search input:focus {
+        border-color: var(--ink);
+        box-shadow: 0 0 0 4px rgba(29, 123, 216, 0.18);
+      }
+
+      .search svg {
+        position: absolute;
+        top: 13px;
+        left: 14px;
+        color: var(--muted);
+      }
+
+      .release-panel {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        box-shadow: 0 18px 52px rgba(7, 31, 58, 0.1);
+      }
+
+      .release-head,
+      .release-row {
+        display: grid;
+        grid-template-columns: minmax(260px, 1.7fr) minmax(92px, 0.55fr) minmax(86px, 0.5fr) minmax(118px, 0.6fr) minmax(126px, 0.6fr) 120px;
+        gap: 18px;
+        align-items: center;
+      }
+
+      .release-head {
+        padding: 15px 18px;
+        border-bottom: 1px solid var(--line);
+        background: #eaf2fb;
+        color: #2c4662;
+        font-size: 0.72rem;
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+
+      .release-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .release-row {
+        min-height: 84px;
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .release-row:last-child {
+        border-bottom: 0;
+      }
+
+      .file-cell {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .file-icon {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 8px;
+        background: var(--paper-2);
+        color: var(--ink);
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      .file-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .file-name {
+        overflow-wrap: anywhere;
+        font-weight: 780;
+      }
+
+      .file-path {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .release-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .cell-muted {
+        color: var(--muted);
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 23px;
+        border-radius: 999px;
+        background: var(--blue-soft);
+        color: #0b3d6f;
+        padding: 0 8px;
+        font-size: 0.74rem;
+        font-weight: 850;
+      }
+
+      .download {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid var(--ink);
+        border-radius: var(--radius);
+        color: var(--ink);
+        font-size: 0.86rem;
+        font-weight: 820;
+        text-decoration: none;
+      }
+
+      .download:hover {
+        background: var(--ink);
+        color: #fff;
+      }
+
+      .details {
+        grid-column: 1 / -1;
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+      }
+
+      .details summary {
+        width: fit-content;
+        cursor: pointer;
+        color: var(--blue);
+        font-size: 0.88rem;
+        font-weight: 850;
+      }
+
+      .details-body {
+        display: grid;
+        gap: 14px;
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .notes-list {
+        margin: 8px 0 0;
+        padding-left: 20px;
+      }
+
+      .notes-list li + li {
+        margin-top: 4px;
+      }
+
+      .signature-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .signature-row code {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--paper);
+        color: var(--ink);
+        padding: 9px 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .copy-small {
+        min-height: 36px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        padding: 0 10px;
+        font-size: 0.82rem;
+        font-weight: 850;
+      }
+
+      .copy-small:hover {
+        border-color: var(--blue);
+      }
+
+      .empty {
+        padding: 34px 18px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .footer {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 0 42px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .footer a {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: 8px;
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        background: var(--paper-2);
+      }
+
+      .footer svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
+
+      @media (max-width: 1020px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: auto;
+        }
+
+        .platform-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 820px) {
+        .download-meta,
+        .panel-actions {
+          grid-template-columns: 1fr;
+        }
+
+        .archive-tools,
+        .section-header {
+          display: grid;
+          align-items: start;
+        }
+
+        .search {
+          width: 100%;
+        }
+
+        .archive-controls {
+          justify-content: stretch;
+        }
+
+        .toggle,
+        .sort-select {
+          width: 100%;
+        }
+
+        .release-head {
+          display: none;
+        }
+
+        .release-row {
+          grid-template-columns: 1fr;
+          gap: 10px;
+          align-items: start;
+          margin: 10px;
+          border: 1px solid var(--line);
+          border-radius: var(--radius);
+          background: #fff;
+        }
+
+        .release-list {
+          background: var(--paper);
+          padding: 1px 0;
+        }
+
+        .download {
+          width: fit-content;
+          padding: 0 14px;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .page {
+          width: min(100% - 24px, 1180px);
+        }
+
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 16px 0;
+        }
+
+        .nav-links {
+          justify-content: flex-start;
+        }
+
+        .hero {
+          gap: 34px;
+          padding: 48px 0 44px;
+        }
+
+        .hero h1 {
+          font-size: clamp(2.7rem, 16vw, 4.6rem);
+        }
+
+        .download-meta,
+        .panel-actions,
+        .platform-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .download-panel-header {
+          display: grid;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="cntnr">
-      <div>Please redirect to <a href="https://www.resistine.com">www.resistine.com</a>.</div>
-    </div>
+    <header class="site-header">
+      <nav class="page nav" aria-label="Primary navigation">
+        <a class="brand" href="https://www.resistine.com" aria-label="Resistine home">
+          <img class="brand-logo" src="assets/resistine-logo.png" alt="Resistine" />
+        </a>
+        <div class="nav-links">
+          <a class="nav-link icon-link" href="https://github.com/Resistine/resistine.github.io" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.93.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.97c.85 0 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.59.69.49A10.15 10.15 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
+            </svg>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero-band">
+      <div class="page hero">
+        <div>
+          <h1>Download Resistine</h1>
+          <p class="hero-copy">
+            Install the Resistine desktop and Android builds used for endpoint protection,
+            update delivery, and security-as-a-service deployments.
+          </p>
+        </div>
+
+        <aside class="download-panel" aria-label="Recommended download">
+          <div class="download-panel-header">
+            <div>
+              <h2 class="download-panel-title">Recommended installer</h2>
+              <p class="download-panel-subtitle" id="detected-copy">
+                Detecting your operating system.
+              </p>
+            </div>
+            <span class="detected" id="detected-platform">Auto detect</span>
+          </div>
+          <div class="download-panel-body">
+            <a class="primary-download" id="primary-download" href="#downloads">
+              <span class="os-glyph" id="primary-icon" aria-hidden="true">OS</span>
+              <span>
+                <strong id="primary-title">Choose a download below</strong>
+                <span id="primary-subtitle">The latest matching installer will appear here.</span>
+              </span>
+            </a>
+            <p class="confidence" id="primary-confidence">
+              Loading latest installer details. <a href="#downloads">Not your OS?</a>
+            </p>
+            <div class="download-meta" aria-label="Recommended download details">
+              <div>
+                <span>Version</span>
+                <strong id="primary-version">Unknown</strong>
+              </div>
+              <div>
+                <span>Type</span>
+                <strong id="primary-architecture">Unknown</strong>
+              </div>
+              <div>
+                <span>Size</span>
+                <strong id="primary-size">Unknown</strong>
+              </div>
+              <div>
+                <span>Source</span>
+                <strong id="primary-source">Repository</strong>
+              </div>
+            </div>
+            <div class="panel-actions">
+              <a class="button blue" id="primary-secondary" href="#archive">All downloads</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <main class="page">
+      <section class="section" id="downloads" aria-labelledby="platform-title">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" id="platform-title">Choose Your Platform</h2>
+            <p class="section-copy">
+              The current OS path is highlighted first, with every other installer kept
+              close by for cross-device deployments.
+            </p>
+          </div>
+        </div>
+        <div class="platform-grid" id="platform-grid"></div>
+      </section>
+
+      <section class="section" id="archive" aria-labelledby="archive-title">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" id="archive-title">Release Archive</h2>
+          </div>
+        </div>
+
+        <div class="archive-tools">
+          <div class="tabs" role="tablist" aria-label="Release platforms">
+            <button class="tab" type="button" data-platform="all" aria-selected="true">All</button>
+            <button class="tab" type="button" data-platform="windows" aria-selected="false">Windows</button>
+            <button class="tab" type="button" data-platform="mac" aria-selected="false">macOS</button>
+            <button class="tab" type="button" data-platform="android" aria-selected="false">Android</button>
+            <button class="tab" type="button" data-platform="linux" aria-selected="false">Linux</button>
+          </div>
+          <div class="archive-controls">
+            <label class="toggle">
+              <input id="latest-only" type="checkbox" />
+              Latest only
+            </label>
+            <select class="sort-select" id="sort-releases" aria-label="Sort releases">
+              <option value="newest">Newest first</option>
+              <option value="platform">Platform</option>
+              <option value="size">Largest file</option>
+              <option value="name">File name</option>
+            </select>
+            <label class="search">
+              <span class="sr-only">Filter releases</span>
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle>
+                <path d="m16.5 16.5 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+              </svg>
+              <input id="release-search" type="search" placeholder="Filter releases..." autocomplete="off" />
+            </label>
+          </div>
+        </div>
+
+        <div class="release-panel">
+          <div class="release-head" aria-hidden="true">
+            <span>File name</span>
+            <span>Version</span>
+            <span>Size</span>
+            <span>Platform</span>
+            <span>Released</span>
+            <span>Download</span>
+          </div>
+          <ul class="release-list" id="release-list">
+            <li class="empty">Loading releases...</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="page footer">
+      <a href="https://github.com/Resistine/resistine.github.io" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.93.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.97c.85 0 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.59.69.49A10.15 10.15 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
+        </svg>
+      </a>
+    </footer>
+
+    <script>
+      const REPO_TREE_URL =
+        "https://api.github.com/repos/Resistine/resistine.github.io/git/trees/main?recursive=1";
+      const APPCAST_URL = "appcast.xml";
+      const RELEASE_FALLBACK = [
+        { path: "releases/android/Resistine_Android-2026.03.03-rc.apk", size: 20417045 },
+        { path: "releases/android/Resistine_Android-2026.03.04-rc.apk", size: 20451732 },
+        { path: "releases/android/Resistine_Android-2026.03.25-rc.apk", size: 20550756 },
+        { path: "releases/mac/Resistine-Desktop-Mac-2026.03.19.dmg", size: 41254837 },
+        { path: "releases/mac/Resistine-Desktop-Mac-2026.04.12.dmg", size: 49269126 },
+        { path: "releases/mac/Resistine-Desktop-Mac-2026.04.30.dmg", size: 49714388 },
+        { path: "releases/mac/Resistine-Installer-1.0.1.dmg", size: 36874084 },
+        { path: "releases/mac/Resistine-Installer-1.0.2.dmg", size: 42287835 },
+        { path: "releases/mac/Resistine-Installer-1.0.3.dmg", size: 41187897 },
+        { path: "releases/mac/Resistine-Installer-1.0.4.dmg", size: 41191401 },
+        { path: "releases/mac/Resistine-Installer-1.0.5.dmg", size: 41165356 },
+        { path: "releases/mac/Resistine-Installer-1.0.6.dmg", size: 41259385 },
+        { path: "releases/windows/Resistine-Desktop-Win-2026.03.19-dev.exe", size: 46610217 },
+        { path: "releases/windows/Resistine-Desktop-Win-2026.03.20-dev.exe", size: 46614586 },
+        { path: "releases/windows/Resistine-Setup-1.0.3.exe", size: 32391555 },
+        { path: "releases/windows/Resistine-Setup-1.0.4.exe", size: 46521078 },
+        { path: "releases/windows/Resistine-Setup-2026.04.01.exe", size: 47568197 },
+        { path: "releases/windows/Resistine-Setup-2026.04.09-test.exe", size: 47568989 },
+        { path: "releases/windows/Resistine-Setup-2026.04.09-test-2.exe", size: 47567557 },
+        { path: "releases/windows/Resistine-Setup-2026.04.09-test-3.exe", size: 47570222 },
+        { path: "releases/windows/Resistine-Setup-2026.05.27-rc.exe", size: 81085022 }
+      ];
+
+      const PLATFORM_META = {
+        windows: { label: "Windows", note: "Setup installers for Windows desktops." },
+        mac: { label: "macOS", note: "DMG installers for Apple desktop systems." },
+        android: { label: "Android", note: "Release candidate APK packages." },
+        linux: { label: "Linux", note: "Linux packages appear here when published." }
+      };
+
+      const state = {
+        detectedPlatform: "all",
+        loadSource: "Repository",
+        latestOnly: false,
+        releases: [],
+        platform: "all",
+        query: "",
+        sort: "newest"
+      };
+
+      const els = {
+        archiveList: document.querySelector("#release-list"),
+        detectedCopy: document.querySelector("#detected-copy"),
+        detectedPlatform: document.querySelector("#detected-platform"),
+        platformGrid: document.querySelector("#platform-grid"),
+        primaryDownload: document.querySelector("#primary-download"),
+        primaryIcon: document.querySelector("#primary-icon"),
+        primaryTitle: document.querySelector("#primary-title"),
+        primarySubtitle: document.querySelector("#primary-subtitle"),
+        primaryConfidence: document.querySelector("#primary-confidence"),
+        primaryVersion: document.querySelector("#primary-version"),
+        primaryArchitecture: document.querySelector("#primary-architecture"),
+        primarySize: document.querySelector("#primary-size"),
+        primarySource: document.querySelector("#primary-source"),
+        primarySecondary: document.querySelector("#primary-secondary"),
+        search: document.querySelector("#release-search"),
+        latestOnly: document.querySelector("#latest-only"),
+        sort: document.querySelector("#sort-releases"),
+        tabs: [...document.querySelectorAll(".tab")]
+      };
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        }[char]));
+      }
+
+      function getPlatform(path) {
+        const match = path.match(/^releases\/([^/]+)\//);
+        return match ? match[1] : "other";
+      }
+
+      function platformLabel(platform) {
+        return PLATFORM_META[platform]?.label || "Other";
+      }
+
+      function platformIcon(platform) {
+        return {
+          android: "Android",
+          linux: "Linux",
+          mac: "macOS",
+          windows: "Windows"
+        }[platform] || "Release";
+      }
+
+      function platformIconSvg(platform) {
+        const icons = {
+          android: `
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+              <path d="M7.2 8.4 5.7 6.1a.75.75 0 1 1 1.3-.75L8.7 8a8 8 0 0 1 6.6 0L17 5.35a.75.75 0 1 1 1.3.75l-1.5 2.3A6.8 6.8 0 0 1 19 13.5V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-5.5a6.8 6.8 0 0 1 2.2-5.1Zm.8 5.1V18h8v-4.5a4 4 0 0 0-8 0Zm1.2-1.7a.9.9 0 1 0 0-1.8.9.9 0 0 0 0 1.8Zm5.6 0a.9.9 0 1 0 0-1.8.9.9 0 0 0 0 1.8ZM3 13h1v5H3v-5Zm17 0h1v5h-1v-5Z" />
+            </svg>`,
+          linux: `
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
+              <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2" />
+              <path d="m7 9 3 3-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M12.5 15H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>`,
+          mac: `
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+              <path d="M16.3 2.4c.1 1.2-.4 2.3-1.2 3.2-.8.9-2 1.5-3.1 1.4-.1-1.1.4-2.2 1.2-3.1.8-.9 2-1.5 3.1-1.5ZM20 16.8c-.4 1-1 1.9-1.7 2.8-.9 1.2-1.8 2.3-3.1 2.3-.7 0-1.2-.2-1.8-.5-.6-.3-1.2-.5-2-.5s-1.5.3-2.1.5c-.6.3-1.1.5-1.8.5-1.2 0-2.2-1.1-3.1-2.4C2.7 17 1.8 12.7 3.9 10c1-1.3 2.5-2.1 4.1-2.1.7 0 1.4.3 2 .5.5.2 1 .4 1.5.4s1-.2 1.6-.4c.7-.3 1.5-.6 2.4-.5 1.4.1 2.7.7 3.6 1.8-1.6 1-2.4 2.4-2.4 4.1 0 1.8 1.1 3 3.3 3Z" />
+            </svg>`,
+          windows: `
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+              <path d="M3 5.3 11 4v7.4H3V5.3Zm9-1.5 9-1.4v9h-9V3.8ZM3 12.6h8V20l-8-1.3v-6.1Zm9 0h9v9l-9-1.4v-7.6Z" />
+            </svg>`
+        };
+        return icons[platform] || `
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+            <path d="M5 3h10l4 4v14H5V3Zm9 1.8V8h3.2L14 4.8ZM7 5v14h10V10h-5V5H7Z" />
+          </svg>`;
+      }
+
+      function basename(path) {
+        return path.split("/").pop();
+      }
+
+      function fileType(path) {
+        const extension = path.split(".").pop().toLowerCase();
+        return {
+          apk: "APK",
+          dmg: "DMG",
+          exe: "EXE",
+          gz: "Archive",
+          pkg: "PKG",
+          tar: "Archive",
+          zip: "ZIP"
+        }[extension] || extension.toUpperCase();
+      }
+
+      function architecture(path) {
+        const file = basename(path).toLowerCase();
+        if (/arm64|aarch64/.test(file)) return "ARM64";
+        if (/x64|x86_64|amd64/.test(file)) return "x64";
+        if (/win/.test(file)) return "Windows";
+        if (/mac/.test(file)) return "macOS";
+        if (/android|apk/.test(file)) return "Android APK";
+        if (/linux/.test(file)) return "Linux";
+        return "Universal";
+      }
+
+      function releaseType(release) {
+        return `${fileType(release.path)} · ${architecture(release.path)}`;
+      }
+
+      function descriptionNotes(description) {
+        if (!description) return [];
+        const doc = new DOMParser().parseFromString(description, "text/html");
+        const listItems = [...doc.querySelectorAll("li")]
+          .map((item) => item.textContent.trim())
+          .filter(Boolean);
+        if (listItems.length) return listItems;
+        const text = doc.body.textContent.trim();
+        return text ? [text] : [];
+      }
+
+      function parseVersion(path) {
+        const file = basename(path).replace(/\.[^.]+$/, "");
+        const date = file.match(/20\d{2}[._-]\d{2}[._-]\d{2}(?:[-._][a-zA-Z0-9]+)*/);
+        if (date) return date[0].replace(/^(\d{4})[-._](\d{2})[-._](\d{2})/, "$1.$2.$3");
+        const semver = file.match(/\d+\.\d+\.\d+(?:[-._][a-zA-Z0-9]+)*/);
+        return semver ? semver[0] : "Unknown";
+      }
+
+      function dateFromVersion(version) {
+        const match = version.match(/^(20\d{2})\.(\d{2})\.(\d{2})/);
+        if (!match) return null;
+        return new Date(`${match[1]}-${match[2]}-${match[3]}T00:00:00Z`);
+      }
+
+      function formatDate(date) {
+        if (!date || Number.isNaN(date.getTime())) return "Unknown";
+        return new Intl.DateTimeFormat("en", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        }).format(date);
+      }
+
+      function formatBytes(size) {
+        if (!Number.isFinite(size) || size <= 0) return "Unknown";
+        const units = ["B", "KB", "MB", "GB"];
+        let value = size;
+        let unit = 0;
+        while (value >= 1024 && unit < units.length - 1) {
+          value /= 1024;
+          unit += 1;
+        }
+        return `${value.toFixed(unit === 0 ? 0 : 1)} ${units[unit]}`;
+      }
+
+      function scoreRelease(release) {
+        if (release.date) return release.date.getTime();
+        const semver = release.version.match(/^(\d+)\.(\d+)\.(\d+)/);
+        if (!semver) return 0;
+        return Number(semver[1]) * 1000000 + Number(semver[2]) * 1000 + Number(semver[3]);
+      }
+
+      function detectPlatform() {
+        const userAgent = navigator.userAgent || "";
+        const platform = navigator.userAgentData?.platform || navigator.platform || userAgent;
+        const source = `${platform} ${userAgent}`;
+        if (/android/i.test(source)) return "android";
+        if (/win/i.test(source)) return "windows";
+        if (/mac|iphone|ipad|ipod/i.test(source)) return "mac";
+        if (/linux/i.test(source)) return "linux";
+        return "all";
+      }
+
+      function getSparkleAttribute(enclosure, localName) {
+        return (
+          enclosure.getAttribute(`sparkle:${localName}`) ||
+          enclosure.getAttributeNS("http://www.andymatuschak.org/xml-namespaces/sparkle", localName) ||
+          ""
+        );
+      }
+
+      function releaseFromFile(file, appcastByPath) {
+        const path = file.path;
+        const platform = getPlatform(path);
+        const appcast = appcastByPath.get(path) || {};
+        const version = appcast.version || parseVersion(path);
+        const date = appcast.date || dateFromVersion(version);
+        return {
+          path,
+          name: basename(path),
+          href: path,
+          platform,
+          version,
+          size: Number(appcast.size || file.size || 0),
+          date,
+          notes: appcast.notes || [],
+          signature: appcast.signature || "",
+          source: appcast.source || state.loadSource
+        };
+      }
+
+      async function loadAppcast() {
+        try {
+          const response = await fetch(APPCAST_URL, { cache: "no-cache" });
+          if (!response.ok) throw new Error("Appcast request failed");
+          const text = await response.text();
+          const doc = new DOMParser().parseFromString(text, "application/xml");
+          const items = [...doc.querySelectorAll("item")];
+          const map = new Map();
+
+          for (const item of items) {
+            const enclosure = item.querySelector("enclosure");
+            if (!enclosure) continue;
+            const url = enclosure.getAttribute("url") || "";
+            const path = new URL(url, window.location.href).pathname.replace(/^\/+/, "");
+            const version =
+              getSparkleAttribute(enclosure, "version") ||
+              item.querySelector("title")?.textContent?.replace(/^Version\s+/i, "") ||
+              "";
+            const pubDate = item.querySelector("pubDate")?.textContent || "";
+            const size = Number(enclosure.getAttribute("length") || 0);
+            const date = pubDate ? new Date(pubDate) : null;
+            const description = item.querySelector("description")?.textContent || "";
+            map.set(path, {
+              version,
+              size,
+              date,
+              notes: descriptionNotes(description),
+              signature: getSparkleAttribute(enclosure, "edSignature"),
+              source: "Appcast"
+            });
+          }
+
+          return map;
+        } catch (error) {
+          return new Map();
+        }
+      }
+
+      async function loadReleaseFiles() {
+        try {
+          const response = await fetch(REPO_TREE_URL, { cache: "no-cache" });
+          if (!response.ok) throw new Error("GitHub tree request failed");
+          const data = await response.json();
+          const files = (data.tree || [])
+            .filter((entry) => entry.type === "blob")
+            .filter((entry) => /^releases\/(android|linux|mac|windows)\//.test(entry.path))
+            .map((entry) => ({ path: entry.path, size: entry.size }));
+
+          if (!files.length) throw new Error("No release files in tree");
+          state.loadSource = "GitHub tree";
+          return files;
+        } catch (error) {
+          state.loadSource = "Embedded fallback";
+          return RELEASE_FALLBACK;
+        }
+      }
+
+      function latestByPlatform(platform) {
+        return state.releases
+          .filter((release) => release.platform === platform)
+          .sort((a, b) => scoreRelease(b) - scoreRelease(a))[0];
+      }
+
+      function updatePrimaryDownload() {
+        const detected = state.detectedPlatform;
+        const fallbackPlatform = ["windows", "mac", "android", "linux"].find((platform) =>
+          latestByPlatform(platform)
+        );
+        const platform = detected !== "all" && latestByPlatform(detected) ? detected : fallbackPlatform;
+        const release = platform ? latestByPlatform(platform) : null;
+        const meta = PLATFORM_META[platform] || {};
+
+        els.detectedPlatform.textContent =
+          detected === "all" ? "OS not detected" : `${platformLabel(detected)} detected`;
+        els.detectedCopy.innerHTML = release
+          ? detected !== "all" && detected !== platform
+            ? `No ${platformLabel(detected)} installer is published yet. Showing ${platformLabel(platform)}. <a href="#downloads">Choose another platform.</a>`
+            : `Best match for ${platformLabel(platform)}. <a href="#downloads">Not your OS?</a>`
+          : `No matching installer was found yet. <a href="#archive">Check the archive.</a>`;
+
+        if (!release) return;
+
+        els.primaryDownload.href = release.href;
+        els.primaryIcon.innerHTML = platformIconSvg(platform);
+        els.primaryTitle.textContent = `Download for ${meta.label}`;
+        els.primarySubtitle.textContent = release.name;
+        els.primaryConfidence.innerHTML = `${release.version} · ${releaseType(release)} · ${formatBytes(release.size)} · ${formatDate(release.date)}. <a href="#downloads">Not your OS?</a>`;
+        els.primaryVersion.textContent = release.version;
+        els.primaryArchitecture.textContent = releaseType(release);
+        els.primarySize.textContent = formatBytes(release.size);
+        els.primarySource.textContent = release.source;
+        els.primarySecondary.href = "#archive";
+      }
+
+      function renderPlatformCards() {
+        const platforms = ["windows", "mac", "android", "linux"];
+        els.platformGrid.innerHTML = platforms
+          .map((platform) => {
+            const meta = PLATFORM_META[platform];
+            const latest = latestByPlatform(platform);
+            const selected = platform === state.detectedPlatform;
+            const href = latest?.href || "#archive";
+            const title = latest ? latest.version : "No file yet";
+            const detail = latest
+              ? `${releaseType(latest)} · ${formatBytes(latest.size)} · ${formatDate(latest.date)}`
+              : platform === "linux"
+                ? "Linux builds are not published yet."
+                : "Publish under releases/ to list it here.";
+            const button = latest ? "Download latest" : "View archive";
+
+            return `
+              <article class="platform-card${selected ? " selected" : ""}">
+                <div class="platform-top">
+                  <span class="platform-icon" aria-hidden="true">${platformIconSvg(platform)}</span>
+                  ${selected ? '<span class="tag">Detected</span>' : ""}
+                </div>
+                <div>
+                  <h3>${escapeHtml(meta.label)}</h3>
+                  <p>${escapeHtml(meta.note)}</p>
+                </div>
+                <div class="platform-latest">
+                  Latest
+                  <strong>${escapeHtml(title)}</strong>
+                  ${escapeHtml(detail)}
+                </div>
+                ${
+                  latest
+                    ? `<a class="button${selected ? " blue" : ""}" href="${escapeHtml(href)}">${button}</a>`
+                    : `<div class="empty-platform"><span>No installer is available for ${escapeHtml(meta.label)}.</span><a class="button" href="#archive">${button}</a></div>`
+                }
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function filteredReleases() {
+        const query = state.query.trim().toLowerCase();
+        return state.releases.filter((release) => {
+          const matchesPlatform = state.platform === "all" || release.platform === state.platform;
+          const latestMatch = !state.latestOnly || latestByPlatform(release.platform)?.path === release.path;
+          const haystack = `${release.name} ${release.version} ${release.platform} ${releaseType(release)}`.toLowerCase();
+          return matchesPlatform && latestMatch && (!query || haystack.includes(query));
+        });
+      }
+
+      function sortedReleases(releases) {
+        return [...releases].sort((a, b) => {
+          if (state.sort === "platform") {
+            const platform = platformLabel(a.platform).localeCompare(platformLabel(b.platform));
+            if (platform !== 0) return platform;
+            return scoreRelease(b) - scoreRelease(a);
+          }
+          if (state.sort === "size") {
+            return b.size - a.size || scoreRelease(b) - scoreRelease(a);
+          }
+          if (state.sort === "name") {
+            return a.name.localeCompare(b.name);
+          }
+          const score = scoreRelease(b) - scoreRelease(a);
+          if (score !== 0) return score;
+          return a.name.localeCompare(b.name);
+        });
+      }
+
+      function releaseDetails(release) {
+        const notes = release.notes.length
+          ? `<div><strong>Release notes</strong><ul class="notes-list">${release.notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul></div>`
+          : `<div><strong>Release notes</strong><p>No release notes were published for this file.</p></div>`;
+        const signature = release.signature
+          ? `<div><strong>Signature</strong><div class="signature-row"><code>${escapeHtml(release.signature)}</code><button class="copy-small" type="button" data-copy="${escapeHtml(release.signature)}">Copy</button></div></div>`
+          : `<div><strong>Signature</strong><p>No signature metadata found for this file.</p></div>`;
+
+        return `
+          <details class="details">
+            <summary>Details</summary>
+            <div class="details-body">
+              ${notes}
+              ${signature}
+            </div>
+          </details>
+        `;
+      }
+
+      function renderArchive() {
+        const releases = sortedReleases(filteredReleases());
+
+        if (!releases.length) {
+          const message =
+            state.platform === "linux"
+              ? "Linux builds are not published yet."
+              : "No releases match the current filters.";
+          els.archiveList.innerHTML = `<li class="empty">${message}</li>`;
+          return;
+        }
+
+        els.archiveList.innerHTML = releases
+          .map((release) => {
+            const latestForPlatform = latestByPlatform(release.platform)?.path === release.path;
+            return `
+              <li class="release-row">
+                <div class="file-cell">
+                  <span class="file-icon" aria-hidden="true">${platformIconSvg(release.platform)}</span>
+                  <div>
+                    <div class="file-name">${escapeHtml(release.name)}</div>
+                    <div class="file-path">${escapeHtml(release.path)}</div>
+                    <div class="release-chips">
+                      <span class="tag">${escapeHtml(releaseType(release))}</span>
+                      <span class="tag">${escapeHtml(release.source)}</span>
+                    </div>
+                  </div>
+                </div>
+                <div>${escapeHtml(release.version)}${latestForPlatform ? ' <span class="tag">Latest</span>' : ""}</div>
+                <div class="cell-muted">${formatBytes(release.size)}</div>
+                <div>${platformLabel(release.platform)}</div>
+                <div class="cell-muted">${formatDate(release.date)}</div>
+                <a class="download" href="${escapeHtml(release.href)}" download>Download<span class="sr-only"> ${escapeHtml(release.name)}</span></a>
+                ${releaseDetails(release)}
+              </li>
+            `;
+          })
+          .join("");
+      }
+
+      function bindControls() {
+        els.search.addEventListener("input", (event) => {
+          state.query = event.target.value;
+          renderArchive();
+        });
+
+        els.latestOnly.addEventListener("change", (event) => {
+          state.latestOnly = event.target.checked;
+          renderArchive();
+        });
+
+        els.sort.addEventListener("change", (event) => {
+          state.sort = event.target.value;
+          renderArchive();
+        });
+
+        for (const tab of els.tabs) {
+          tab.addEventListener("click", () => {
+            state.platform = tab.dataset.platform;
+            els.tabs.forEach((item) =>
+              item.setAttribute("aria-selected", String(item === tab))
+            );
+            renderArchive();
+          });
+        }
+
+        els.archiveList.addEventListener("click", async (event) => {
+          const button = event.target.closest("[data-copy]");
+          if (!button) return;
+          const value = button.dataset.copy;
+          try {
+            await navigator.clipboard.writeText(value);
+            button.textContent = "Copied";
+            setTimeout(() => {
+              button.textContent = "Copy";
+            }, 1400);
+          } catch (error) {
+            window.prompt("Copy signature", value);
+          }
+        });
+      }
+
+      async function init() {
+        bindControls();
+        state.detectedPlatform = detectPlatform();
+
+        const [files, appcastByPath] = await Promise.all([loadReleaseFiles(), loadAppcast()]);
+        state.releases = files
+          .map((file) => releaseFromFile(file, appcastByPath))
+          .filter((release) => release.platform !== "other");
+
+        updatePrimaryDownload();
+        renderPlatformCards();
+        renderArchive();
+      }
+
+      init();
+    </script>
   </body>
 </html>
