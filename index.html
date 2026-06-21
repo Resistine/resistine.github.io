@@ -7,6 +7,8 @@
       name="description"
       content="Download Resistine desktop and Android releases from GitHub Pages."
     />
+    <link rel="icon" type="image/png" href="assets/resistine-favicon.png" />
+    <link rel="apple-touch-icon" href="assets/resistine-favicon.png" />
     <title>Resistine Downloads</title>
     <script src="assets/theme-boot.js"></script>
     <link rel="stylesheet" href="assets/styles.css" />
@@ -18,10 +20,26 @@
           <img class="brand-logo" src="assets/resistine-logo.png" alt="Resistine" />
         </a>
         <div class="nav-links">
-          <select class="nav-control language-select" id="language-select" aria-label="Language">
-            <option value="en">EN</option>
-            <option value="de">DE</option>
-          </select>
+          <div class="language-menu" id="language-menu">
+            <button
+              class="nav-control language-trigger"
+              id="language-trigger"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-controls="language-options"
+              aria-label="Language"
+            >
+              <span id="language-trigger-label">EN</span>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                <path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </button>
+            <div class="language-options" id="language-options" role="listbox" tabindex="-1" aria-label="Language" hidden>
+              <button class="language-option" type="button" role="option" data-language-value="en">EN</button>
+              <button class="language-option" type="button" role="option" data-language-value="de">DE</button>
+            </div>
+          </div>
           <button class="nav-control theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">
             <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
               <path d="M21 12.8A8.6 8.6 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
@@ -64,9 +82,6 @@
                 <span id="primary-subtitle" data-i18n="primary.placeholderSubtitle">The latest matching installer will appear here.</span>
               </span>
             </a>
-            <p class="confidence" id="primary-confidence">
-              <span data-i18n="primary.loading">Loading latest installer details.</span> <a href="#downloads" data-i18n="primary.notYourOs">Not your OS?</a>
-            </p>
             <div class="download-meta" aria-label="Recommended download details">
               <div>
                 <span data-i18n="meta.version">Version</span>
@@ -119,18 +134,33 @@
             <button class="tab" type="button" data-platform="all" aria-selected="true" data-i18n="platform.all">All</button>
             <button class="tab" type="button" data-platform="windows" aria-selected="false">Windows</button>
             <button class="tab" type="button" data-platform="mac" aria-selected="false">macOS</button>
-            <button class="tab" type="button" data-platform="ios" aria-selected="false">iOS</button>
             <button class="tab" type="button" data-platform="android" aria-selected="false">Android</button>
             <button class="tab" type="button" data-platform="linux" aria-selected="false">Linux</button>
           </div>
           <div class="archive-controls">
             <button class="toggle" id="latest-only" type="button" aria-pressed="false" data-i18n="archive.latestOnly">Latest only</button>
-            <select class="sort-select" id="sort-releases" aria-label="Sort releases">
-              <option value="newest" data-i18n="sort.newest">Newest first</option>
-              <option value="platform" data-i18n="sort.platform">Platform</option>
-              <option value="size" data-i18n="sort.size">Largest file</option>
-              <option value="name" data-i18n="sort.name">File name</option>
-            </select>
+            <div class="sort-menu" id="sort-menu">
+              <button
+                class="sort-trigger"
+                id="sort-trigger"
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                aria-controls="sort-options"
+                aria-label="Sort releases"
+              >
+                <span id="sort-trigger-label" data-i18n="sort.newest">Newest first</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                  <path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </button>
+              <div class="sort-options" id="sort-options" role="listbox" tabindex="-1" aria-label="Sort releases" hidden>
+                <button class="sort-option" type="button" role="option" data-sort-value="newest" data-i18n="sort.newest">Newest first</button>
+                <button class="sort-option" type="button" role="option" data-sort-value="platform" data-i18n="sort.platform">Platform</button>
+                <button class="sort-option" type="button" role="option" data-sort-value="size" data-i18n="sort.size">Largest file</button>
+                <button class="sort-option" type="button" role="option" data-sort-value="name" data-i18n="sort.name">File name</button>
+              </div>
+            </div>
             <label class="search">
               <span class="sr-only" data-i18n="archive.filter">Filter releases</span>
               <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -155,6 +185,7 @@
             <li class="empty" data-i18n="archive.loading">Loading releases...</li>
           </ul>
         </div>
+        <p class="archive-note" data-i18n="archive.appStoreSoon">Coming soon to the App Store.</p>
       </section>
 
     </main>
