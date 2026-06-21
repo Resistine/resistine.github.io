@@ -6,7 +6,7 @@ const CHECKSUMS_URL = "checksums.sha256";
 const PLATFORM_META = {
   windows: { label: "Windows", note: "Setup installers for Windows desktops." },
   mac: { label: "macOS", note: "DMG installers for Apple desktop systems." },
-  ios: { label: "iOS", note: "Mobile builds for iPhone and iPad appear here when published." },
+  ios: { label: "iOS", note: "Coming soon to the App Store." },
   android: { label: "Android", note: "Release candidate APK packages." },
   linux: { label: "Linux", note: "Linux packages appear here when published." }
 };
@@ -33,7 +33,6 @@ const els = {
   primaryIcon: document.querySelector("#primary-icon"),
   primaryTitle: document.querySelector("#primary-title"),
   primarySubtitle: document.querySelector("#primary-subtitle"),
-  primaryConfidence: document.querySelector("#primary-confidence"),
   primaryVersion: document.querySelector("#primary-version"),
   primaryArchitecture: document.querySelector("#primary-architecture"),
   primarySize: document.querySelector("#primary-size"),
@@ -41,8 +40,16 @@ const els = {
   primarySecondary: document.querySelector("#primary-secondary"),
   search: document.querySelector("#release-search"),
   latestOnly: document.querySelector("#latest-only"),
-  sort: document.querySelector("#sort-releases"),
-  language: document.querySelector("#language-select"),
+  sortMenu: document.querySelector("#sort-menu"),
+  sortTrigger: document.querySelector("#sort-trigger"),
+  sortTriggerLabel: document.querySelector("#sort-trigger-label"),
+  sortOptionsPanel: document.querySelector("#sort-options"),
+  sortOptions: [...document.querySelectorAll(".sort-option")],
+  languageMenu: document.querySelector("#language-menu"),
+  languageTrigger: document.querySelector("#language-trigger"),
+  languageTriggerLabel: document.querySelector("#language-trigger-label"),
+  languageOptionsPanel: document.querySelector("#language-options"),
+  languageOptions: [...document.querySelectorAll(".language-option")],
   themeToggle: document.querySelector("#theme-toggle"),
   tabs: [...document.querySelectorAll(".tab")]
 };
@@ -56,7 +63,6 @@ function applyLanguage(language) {
   state.language = I18N[language] ? language : "en";
   document.documentElement.lang = state.language;
   localStorage.setItem("resistine-language", state.language);
-  if (els.language) els.language.value = state.language;
   document.querySelectorAll("[data-i18n]").forEach((node) => {
     node.textContent = t(node.dataset.i18n);
   });
@@ -64,7 +70,12 @@ function applyLanguage(language) {
     node.setAttribute("placeholder", t(node.dataset.i18nPlaceholder));
   });
   if (els.themeToggle) els.themeToggle.setAttribute("aria-label", t("theme.toggle"));
-  if (els.language) els.language.setAttribute("aria-label", t("language.label"));
+  if (els.languageTrigger) els.languageTrigger.setAttribute("aria-label", t("language.label"));
+  if (els.languageOptionsPanel) els.languageOptionsPanel.setAttribute("aria-label", t("language.label"));
+  if (els.sortTrigger) els.sortTrigger.setAttribute("aria-label", t("sort.label"));
+  if (els.sortOptionsPanel) els.sortOptionsPanel.setAttribute("aria-label", t("sort.label"));
+  renderLanguageMenu();
+  renderSortMenu();
 }
 
 function setTheme(theme) {
@@ -75,6 +86,68 @@ function setTheme(theme) {
 
 function updateHeaderState() {
   els.header?.classList.toggle("is-scrolled", window.scrollY > 12);
+}
+
+function sortLabel(value) {
+  return t(`sort.${value}`);
+}
+
+function languageLabel(value) {
+  return value.toUpperCase();
+}
+
+function closeLanguageMenu() {
+  if (!els.languageMenu || !els.languageTrigger || !els.languageOptionsPanel) return;
+  els.languageMenu.classList.remove("is-open");
+  els.languageTrigger.setAttribute("aria-expanded", "false");
+  els.languageOptionsPanel.hidden = true;
+}
+
+function openLanguageMenu() {
+  if (!els.languageMenu || !els.languageTrigger || !els.languageOptionsPanel) return;
+  closeSortMenu();
+  els.languageMenu.classList.add("is-open");
+  els.languageTrigger.setAttribute("aria-expanded", "true");
+  els.languageOptionsPanel.hidden = false;
+}
+
+function closeSortMenu() {
+  if (!els.sortMenu || !els.sortTrigger || !els.sortOptionsPanel) return;
+  els.sortMenu.classList.remove("is-open");
+  els.sortTrigger.setAttribute("aria-expanded", "false");
+  els.sortOptionsPanel.hidden = true;
+}
+
+function openSortMenu() {
+  if (!els.sortMenu || !els.sortTrigger || !els.sortOptionsPanel) return;
+  closeLanguageMenu();
+  els.sortMenu.classList.add("is-open");
+  els.sortTrigger.setAttribute("aria-expanded", "true");
+  els.sortOptionsPanel.hidden = false;
+}
+
+function renderLanguageMenu() {
+  if (els.languageTriggerLabel) {
+    els.languageTriggerLabel.textContent = languageLabel(state.language);
+  }
+  if (!els.languageOptions.length) return;
+  els.languageOptions.forEach((option) => {
+    const selected = option.dataset.languageValue === state.language;
+    option.setAttribute("aria-selected", String(selected));
+    option.tabIndex = selected ? 0 : -1;
+  });
+}
+
+function renderSortMenu() {
+  if (els.sortTriggerLabel) {
+    els.sortTriggerLabel.textContent = sortLabel(state.sort);
+  }
+  if (!els.sortOptions.length) return;
+  els.sortOptions.forEach((option) => {
+    const selected = option.dataset.sortValue === state.sort;
+    option.setAttribute("aria-selected", String(selected));
+    option.tabIndex = selected ? 0 : -1;
+  });
 }
 
 function escapeHtml(value) {
@@ -386,7 +459,11 @@ function updatePrimaryDownload() {
   const meta = PLATFORM_META[platform] || {};
 
   els.detectedPlatform.textContent =
-    detected === "all" ? "OS not detected" : `${platformLabel(detected)} detected`;
+    detected === "all"
+      ? "OS not detected"
+      : detected === "ios"
+        ? t("primary.mobileDetected")
+        : `${platformLabel(detected)} detected`;
   els.detectedCopy.innerHTML = release
     ? detected !== "all" && detected !== platform
       ? `${t("primary.noDetected", { detected: platformLabel(detected), platform: platformLabel(platform) })} <a href="#downloads">${t("primary.chooseAnother")}</a>`
@@ -399,7 +476,6 @@ function updatePrimaryDownload() {
   els.primaryIcon.innerHTML = platformIconSvg(platform);
   els.primaryTitle.textContent = `Download for ${meta.label}`;
   els.primarySubtitle.textContent = release.name;
-  els.primaryConfidence.innerHTML = `${release.version} · ${releaseType(release)} · ${formatBytes(release.size)} · ${formatDate(release.date)}. <a href="#downloads">${t("primary.notYourOs")}</a>`;
   els.primaryVersion.textContent = release.version;
   els.primaryArchitecture.textContent = releaseType(release);
   els.primarySize.textContent = formatBytes(release.size);
@@ -408,7 +484,7 @@ function updatePrimaryDownload() {
 }
 
 function renderPlatformCards() {
-  const platforms = ["windows", "mac", "ios", "android", "linux"];
+  const platforms = ["windows", "mac", "android", "linux"];
   els.platformGrid.innerHTML = platforms
     .map((platform) => {
       const meta = PLATFORM_META[platform];
@@ -584,24 +660,105 @@ function bindControls() {
     renderArchive();
   });
 
-  els.sort.addEventListener("change", (event) => {
-    state.sort = event.target.value;
-    renderArchive();
-  });
-
-  els.language.addEventListener("change", (event) => {
-    applyLanguage(event.target.value);
-    updatePrimaryDownload();
-    renderPlatformCards();
-    renderArchive();
-  });
-
   els.themeToggle.addEventListener("click", () => {
     const currentTheme = document.documentElement.dataset.theme;
     setTheme(currentTheme === "dark" ? "light" : "dark");
   });
 
   window.addEventListener("scroll", updateHeaderState, { passive: true });
+
+  els.languageTrigger?.addEventListener("click", () => {
+    if (els.languageMenu?.classList.contains("is-open")) {
+      closeLanguageMenu();
+      return;
+    }
+    openLanguageMenu();
+  });
+
+  els.languageTrigger?.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      openLanguageMenu();
+      els.languageOptions.find((option) => option.dataset.languageValue === state.language)?.focus();
+    }
+  });
+
+  els.languageOptions.forEach((option, index) => {
+    option.addEventListener("click", () => {
+      applyLanguage(option.dataset.languageValue);
+      updatePrimaryDownload();
+      renderPlatformCards();
+      renderArchive();
+      closeLanguageMenu();
+      els.languageTrigger?.focus();
+    });
+
+    option.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        els.languageOptions[(index + 1) % els.languageOptions.length].focus();
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        els.languageOptions[(index - 1 + els.languageOptions.length) % els.languageOptions.length].focus();
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        closeLanguageMenu();
+        els.languageTrigger?.focus();
+      }
+    });
+  });
+
+  els.sortTrigger?.addEventListener("click", () => {
+    if (els.sortMenu?.classList.contains("is-open")) {
+      closeSortMenu();
+      return;
+    }
+    openSortMenu();
+  });
+
+  els.sortTrigger?.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      openSortMenu();
+      els.sortOptions.find((option) => option.dataset.sortValue === state.sort)?.focus();
+    }
+  });
+
+  els.sortOptions.forEach((option, index) => {
+    option.addEventListener("click", () => {
+      state.sort = option.dataset.sortValue;
+      renderSortMenu();
+      renderArchive();
+      closeSortMenu();
+      els.sortTrigger?.focus();
+    });
+
+    option.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        els.sortOptions[(index + 1) % els.sortOptions.length].focus();
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        els.sortOptions[(index - 1 + els.sortOptions.length) % els.sortOptions.length].focus();
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        closeSortMenu();
+        els.sortTrigger?.focus();
+      }
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!els.languageMenu?.contains(event.target)) closeLanguageMenu();
+    if (!els.sortMenu?.contains(event.target)) closeSortMenu();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeLanguageMenu();
+      closeSortMenu();
+    }
+  });
 
   for (const tab of els.tabs) {
     tab.addEventListener("click", () => {
@@ -647,6 +804,7 @@ async function init() {
 
   updatePrimaryDownload();
   renderPlatformCards();
+  renderSortMenu();
   renderArchive();
 }
 
