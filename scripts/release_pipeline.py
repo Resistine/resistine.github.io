@@ -48,6 +48,7 @@ class LocalAsset:
     platform: str
     version: str
     size: int
+    date: str
     prerelease: bool
 
     @property
@@ -109,6 +110,7 @@ def scan_assets(root: Path) -> list[LocalAsset]:
                 platform=platform,
                 version=version,
                 size=path.stat().st_size,
+                date=datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).isoformat().replace("+00:00", "Z"),
                 prerelease=is_prerelease(path.name),
             )
         )
@@ -310,6 +312,12 @@ def generate_manifest(root: Path, assets: list[LocalAsset], repo: str, output: P
                 continue
             version = local.version if local else extract_version(name) or tag_version
             path = local.path if local else f"releases/{platform}/{name}"
+            release_date = (
+                release.get("published_at")
+                or remote_asset.get("updated_at")
+                or remote_asset.get("created_at")
+                or release.get("created_at")
+            )
             manifest_assets.append(
                 {
                     "path": path,
@@ -317,7 +325,7 @@ def generate_manifest(root: Path, assets: list[LocalAsset], repo: str, output: P
                     "platform": platform,
                     "version": version,
                     "size": int(remote_asset.get("size") or (local.size if local else 0)),
-                    "date": parse_github_date(release.get("published_at") or release.get("created_at")),
+                    "date": parse_github_date(release_date),
                     "href": remote_asset.get("browser_download_url"),
                     "checksum": checksums.get(path, ""),
                     "notes": release_notes(release.get("body")),
@@ -326,7 +334,10 @@ def generate_manifest(root: Path, assets: list[LocalAsset], repo: str, output: P
                 }
             )
 
-    manifest_assets.sort(key=lambda item: (item["version"], item["platform"], item["name"]), reverse=True)
+    manifest_assets.sort(
+        key=lambda item: (item.get("date") or "", item["version"], item["platform"], item["name"]),
+        reverse=True,
+    )
     local_fallbacks = [
         {
             "path": item.path,
@@ -334,7 +345,7 @@ def generate_manifest(root: Path, assets: list[LocalAsset], repo: str, output: P
             "platform": item.platform,
             "version": item.version,
             "size": item.size,
-            "date": None,
+            "date": item.date,
             "href": item.path,
             "checksum": checksums.get(item.path, ""),
             "notes": [],

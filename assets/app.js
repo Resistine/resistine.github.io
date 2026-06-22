@@ -88,6 +88,19 @@ function updateHeaderState() {
   els.header?.classList.toggle("is-scrolled", window.scrollY > 12);
 }
 
+function scrollToHashTarget(hash = window.location.hash) {
+  if (!hash || hash === "#") return;
+  const target = document.querySelector(hash);
+  if (!target) return;
+  const anchor = target.querySelector?.(".section-title") || target;
+  const headerHeight = els.header?.getBoundingClientRect().height || 0;
+  const safeGap = 18;
+  window.requestAnimationFrame(() => {
+    const top = anchor.getBoundingClientRect().top + window.scrollY - headerHeight - safeGap;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  });
+}
+
 function sortLabel(value) {
   return t(`sort.${value}`);
 }
@@ -295,10 +308,19 @@ function formatBytes(size) {
 }
 
 function scoreRelease(release) {
-  if (release.date) return release.date.getTime();
+  const releasedAt = release.date?.getTime();
+  if (Number.isFinite(releasedAt)) return releasedAt;
   const semver = release.version.match(/^(\d+)\.(\d+)\.(\d+)/);
   if (!semver) return 0;
   return Number(semver[1]) * 1000000 + Number(semver[2]) * 1000 + Number(semver[3]);
+}
+
+function compareNewestRelease(a, b) {
+  const score = scoreRelease(b) - scoreRelease(a);
+  if (score !== 0) return score;
+  const version = b.version.localeCompare(a.version, undefined, { numeric: true, sensitivity: "base" });
+  if (version !== 0) return version;
+  return b.name.localeCompare(a.name, undefined, { numeric: true, sensitivity: "base" });
 }
 
 function detectPlatform() {
@@ -326,19 +348,20 @@ function releaseFromFile(file, appcastByPath) {
   const path = file.path;
   const platform = getPlatform(path);
   const appcast = appcastByPath.get(path) || {};
-  const version = appcast.version || file.version || parseVersion(path);
-  const parsedManifestDate = file.date ? new Date(file.date) : null;
+  const version = file.version || appcast.version || parseVersion(path);
+  const pushedDate = file.date || file.published_at || file.uploaded_at || file.updated_at || file.created_at;
+  const parsedManifestDate = pushedDate ? new Date(pushedDate) : null;
   const manifestDate = parsedManifestDate && !Number.isNaN(parsedManifestDate.getTime())
     ? parsedManifestDate
     : null;
-  const date = appcast.date || manifestDate || dateFromVersion(version);
+  const date = manifestDate || appcast.date || dateFromVersion(version);
   return {
     path,
     name: basename(path),
     href: file.href || path,
     platform,
     version,
-    size: Number(appcast.size || file.size || 0),
+    size: Number(file.size || appcast.size || 0),
     date,
     notes: appcast.notes?.length ? appcast.notes : Array.isArray(file.notes) ? file.notes : [],
     signature: appcast.signature || file.signature || "",
@@ -446,7 +469,7 @@ async function loadReleaseFiles() {
 function latestByPlatform(platform) {
   return state.releases
     .filter((release) => release.platform === platform)
-    .sort((a, b) => scoreRelease(b) - scoreRelease(a))[0];
+    .sort(compareNewestRelease)[0];
 }
 
 function updatePrimaryDownload() {
@@ -542,17 +565,15 @@ function sortedReleases(releases) {
     if (state.sort === "platform") {
       const platform = platformLabel(a.platform).localeCompare(platformLabel(b.platform));
       if (platform !== 0) return platform;
-      return scoreRelease(b) - scoreRelease(a);
+      return compareNewestRelease(a, b);
     }
     if (state.sort === "size") {
-      return b.size - a.size || scoreRelease(b) - scoreRelease(a);
+      return b.size - a.size || compareNewestRelease(a, b);
     }
     if (state.sort === "name") {
       return a.name.localeCompare(b.name);
     }
-    const score = scoreRelease(b) - scoreRelease(a);
-    if (score !== 0) return score;
-    return a.name.localeCompare(b.name);
+    return compareNewestRelease(a, b);
   });
 }
 
@@ -666,6 +687,7 @@ function bindControls() {
   });
 
   window.addEventListener("scroll", updateHeaderState, { passive: true });
+  window.addEventListener("hashchange", scrollToHashTarget);
 
   els.languageTrigger?.addEventListener("click", () => {
     if (els.languageMenu?.classList.contains("is-open")) {
@@ -751,6 +773,16 @@ function bindControls() {
   document.addEventListener("click", (event) => {
     if (!els.languageMenu?.contains(event.target)) closeLanguageMenu();
     if (!els.sortMenu?.contains(event.target)) closeSortMenu();
+    const anchor = event.target.closest?.('a[href^="#"]');
+    if (!anchor) return;
+    const hash = anchor.getAttribute("href");
+    if (!hash || hash === "#") return;
+    if (!document.querySelector(hash)) return;
+    event.preventDefault();
+    if (window.location.hash !== hash) {
+      history.pushState(null, "", hash);
+    }
+    scrollToHashTarget(hash);
   });
 
   document.addEventListener("keydown", (event) => {
@@ -806,6 +838,7 @@ async function init() {
   renderPlatformCards();
   renderSortMenu();
   renderArchive();
+  scrollToHashTarget();
 }
 
 init();
