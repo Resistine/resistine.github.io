@@ -369,6 +369,27 @@ def generate_manifest(root: Path, assets: list[LocalAsset], repo: str, output: P
     )
 
 
+def rewrite_appcast_urls(root: Path, manifest_path: Path, appcast_path: Path) -> None:
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    href_by_path = {
+        str(item.get("path")): str(item.get("href"))
+        for item in manifest.get("releases", [])
+        if item.get("path") and item.get("href")
+    }
+    text = appcast_path.read_text(encoding="utf-8")
+
+    def replace_url(match: re.Match[str]) -> str:
+        path = match.group(1)
+        href = href_by_path.get(path)
+        if not href:
+            return match.group(0)
+        return f'url="{href}"'
+
+    updated = re.sub(r'url="https://resistine\.github\.io/(releases/[^"]+)"', replace_url, text)
+    appcast_path.write_text(updated, encoding="utf-8")
+    print(f"Rewrote appcast download URLs in {display_path(appcast_path, root)}")
+
+
 def repository_name(value: str | None) -> str:
     repo = value or os.environ.get("GITHUB_REPOSITORY")
     if not repo or "/" not in repo:
@@ -392,6 +413,10 @@ def main() -> None:
     manifest_parser = subparsers.add_parser("manifest")
     manifest_parser.add_argument("--repo")
     manifest_parser.add_argument("--output", type=Path)
+
+    appcast_parser = subparsers.add_parser("appcast-urls")
+    appcast_parser.add_argument("--manifest", type=Path, default=Path("releases.json"))
+    appcast_parser.add_argument("--appcast", type=Path, default=Path("appcast.xml"))
 
     args = parser.parse_args()
     root = args.root.resolve()
@@ -419,6 +444,10 @@ def main() -> None:
     if args.command == "manifest":
         output = (args.output or root / "releases.json").resolve()
         generate_manifest(root, assets, repository_name(args.repo), output)
+        return
+
+    if args.command == "appcast-urls":
+        rewrite_appcast_urls(root, (root / args.manifest).resolve(), (root / args.appcast).resolve())
         return
 
 
