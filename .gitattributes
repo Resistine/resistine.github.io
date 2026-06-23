@@ -1,0 +1,12 @@
+releases/**/*.apk export-ignore
+releases/**/*.dmg export-ignore
+releases/**/*.exe export-ignore
+releases/**/*.ipa export-ignore
+releases/**/*.msi export-ignore
+releases/**/*.pkg export-ignore
+releases/**/*.AppImage export-ignore
+releases/**/*.deb export-ignore
+releases/**/*.rpm export-ignore
+releases/**/*.tar.gz export-ignore
+releases/**/*.tgz export-ignore
+releases/**/*.zip export-ignore
