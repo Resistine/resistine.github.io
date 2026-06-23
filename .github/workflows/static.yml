@@ -45,13 +45,19 @@ jobs:
         run: python scripts/release_pipeline.py manifest
         env:
           GITHUB_TOKEN: ${{ github.token }}
+      - name: Rewrite appcast download URLs
+        run: python scripts/release_pipeline.py appcast-urls
+      - name: Stage Pages site
+        run: |
+          mkdir -p _site
+          cp -R assets _site/assets
+          cp index.html appcast.xml checksums.sha256 releases.json _site/
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
