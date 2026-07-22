@@ -52,7 +52,7 @@
       ]]></description>
       <pubDate>Tue, 21 Jul 2026 00:00:00 +0000</pubDate>
       <enclosure
-        url="https://resistine.github.io/releases/windows/Resistine-Setup-2026.07.21-rc.exe"
+        url="https://github.com/Resistine/resistine.github.io/releases/download/v2026.07.21/Resistine-Setup-2026.07.21-rc.exe"
         sparkle:version="2026.07.21-rc"
         sparkle:shortVersionString="2026.07.21-rc"
         sparkle:os="windows"
