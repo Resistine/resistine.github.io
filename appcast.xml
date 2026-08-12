@@ -36,7 +36,7 @@
       3. Upload Resistine-Setup-VERSION.exe to resistine.github.io/releases/windows/
       4. Add a new <item os="Windows"> with version, length, and download URL below
     -->
-<!-- Linux (all distros) — first release 2026.08.12 -->
+<!-- Linux (all distros), first release 2026.08.12 -->
      <item>
   <title>Resistine 2026.08.12</title>
   <description><![CDATA[First Linux release.]]></description>
